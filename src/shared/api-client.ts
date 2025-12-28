@@ -114,9 +114,9 @@ class ApiClient {
     hypeScore = Math.min(100, hypeScore);
 
     let riskLevel: RiskLevel;
-    if (hypeScore < 30) riskLevel = RiskLevel.Low;
-    else if (hypeScore < 50) riskLevel = RiskLevel.Medium;
-    else if (hypeScore < 75) riskLevel = RiskLevel.High;
+    if (hypeScore <= 40) riskLevel = RiskLevel.Low;
+    else if (hypeScore <= 60) riskLevel = RiskLevel.Medium;
+    else if (hypeScore <= 80) riskLevel = RiskLevel.High;
     else riskLevel = RiskLevel.Critical;
 
     const flags: IHypeFlag[] = [];

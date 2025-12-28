@@ -106,6 +106,7 @@
           <div class="tabs-header">
             <button class="tab-btn active" data-tab="details">📊 Szczegóły</button>
             <button class="tab-btn" data-tab="flags">⚠️ Flagi <span class="tab-count" id="flags-count">0</span></button>
+            <button class="tab-btn" data-tab="alerts">🔔 Alarmy <span class="tab-count" id="alerts-count">0</span></button>
             <button class="tab-btn" data-tab="history">📈 Historia</button>
           </div>
           
@@ -131,9 +132,29 @@
               <p class="empty-message">Brak ostrzeżeń</p>
             </div>
           </div>
+
+          <div class="tab-content" id="tab-alerts">
+            <div class="alerts-container">
+              <div class="alerts-list" id="alerts-list">
+                <p class="empty-message">Brak aktywnych alarmów</p>
+              </div>
+            </div>
+          </div>
           
           <div class="tab-content" id="tab-history">
-            <p class="empty-message">Historia cen niedostępna</p>
+            <div class="history-container">
+              <div class="history-header">
+                <span class="history-count" id="history-count">0 analiz</span>
+                <button class="history-clear-btn" id="history-clear-btn" title="Wyczyść historię">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="history-list" id="history-list">
+                <p class="empty-message">Brak historii analiz</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -144,6 +165,84 @@
           </svg>
           Analizuj ponownie
         </button>
+
+        <button class="price-alert-btn" id="price-alert-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+          <span id="price-alert-btn-text">Ustaw alarm cenowy</span>
+        </button>
+
+        <!-- Price Comparison -->
+        <div class="price-compare-section" id="price-compare-section">
+          <div class="section-header">
+            <span class="section-title">🔍 Porównaj ceny</span>
+            <button class="section-toggle" id="compare-toggle">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+          </div>
+          <div class="compare-links" id="compare-links">
+            <a href="#" class="compare-link" id="compare-ceneo" target="_blank">
+              <span class="compare-icon">🛒</span>
+              <span class="compare-name">Ceneo</span>
+              <svg class="compare-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H7M17 7v10"/>
+              </svg>
+            </a>
+            <a href="#" class="compare-link" id="compare-google" target="_blank">
+              <span class="compare-icon">🔎</span>
+              <span class="compare-name">Google Shopping</span>
+              <svg class="compare-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H7M17 7v10"/>
+              </svg>
+            </a>
+            <a href="#" class="compare-link" id="compare-allegro" target="_blank">
+              <span class="compare-icon">🏷️</span>
+              <span class="compare-name">Allegro</span>
+              <svg class="compare-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H7M17 7v10"/>
+              </svg>
+            </a>
+            <a href="#" class="compare-link" id="compare-amazon" target="_blank">
+              <span class="compare-icon">📦</span>
+              <span class="compare-name">Amazon</span>
+              <svg class="compare-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 17L17 7M17 7H7M17 7v10"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Alert Modal -->
+      <div class="modal-overlay hidden" id="price-alert-modal">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 class="modal-title">🔔 Alarm cenowy</h3>
+            <button class="modal-close" id="price-alert-close">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="current-price-info">
+              <span class="price-label">Aktualna cena:</span>
+              <span class="price-value" id="modal-current-price">—</span>
+            </div>
+            <div class="target-price-input">
+              <label for="target-price">Powiadom mnie gdy cena spadnie do:</label>
+              <div class="price-input-wrapper">
+                <input type="number" id="target-price" placeholder="0.00" step="0.01" min="0">
+                <span class="price-currency" id="modal-currency">zł</span>
+              </div>
+            </div>
+            <p class="modal-hint">Otrzymasz powiadomienie gdy cena produktu spadnie poniżej ustalonej kwoty.</p>
+          </div>
+          <div class="modal-footer">
+            <button class="modal-btn modal-btn-secondary" id="price-alert-cancel">Anuluj</button>
+            <button class="modal-btn modal-btn-primary" id="price-alert-save">Ustaw alarm</button>
+          </div>
+        </div>
       </div>
 
       <div class="state error-state hidden" id="error-state">

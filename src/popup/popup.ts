@@ -1,4 +1,4 @@
-import type { IProductData, IAnalysisResult, IHypeFlag } from '../shared/types/index';
+import type { IProductData, IAnalysisResult, IHypeFlag, IPriceAlert } from '../shared/types/index';
 import { RiskLevel, Currency } from '../shared/types/index';
 
 const loadingState = document.getElementById('loading-state')!;
@@ -35,8 +35,27 @@ const settingsBtn = document.getElementById('settings-btn')!;
 const settingsPanel = document.getElementById('settings-panel')!;
 const settingsBack = document.getElementById('settings-back')!;
 
+const priceAlertBtn = document.getElementById('price-alert-btn')!;
+const priceAlertModal = document.getElementById('price-alert-modal')!;
+const priceAlertClose = document.getElementById('price-alert-close')!;
+const priceAlertCancel = document.getElementById('price-alert-cancel')!;
+const priceAlertSave = document.getElementById('price-alert-save')!;
+const targetPriceInput = document.getElementById('target-price') as HTMLInputElement;
+const modalCurrentPrice = document.getElementById('modal-current-price')!;
+const modalCurrency = document.getElementById('modal-currency')!;
+const priceAlertBtnText = document.getElementById('price-alert-btn-text')!;
+
+const compareSection = document.getElementById('price-compare-section')!;
+const compareToggle = document.getElementById('compare-toggle')!;
+const compareLinks = document.getElementById('compare-links')!;
+const compareCeneo = document.getElementById('compare-ceneo') as HTMLAnchorElement;
+const compareGoogle = document.getElementById('compare-google') as HTMLAnchorElement;
+const compareAllegro = document.getElementById('compare-allegro') as HTMLAnchorElement;
+const compareAmazon = document.getElementById('compare-amazon') as HTMLAnchorElement;
+
 let currentProduct: IProductData | null = null;
 let currentAnalysis: IAnalysisResult | null = null;
+let currentPriceAlert: IPriceAlert | null = null;
 
 interface UserSettings {
   autoAnalyze: boolean;
@@ -60,6 +79,9 @@ async function init(): Promise<void> {
   
   initTabs();
   initSettings();
+  initHistoryActions();
+  initPriceAlert();
+  initPriceComparison();
 
   await loadProductData();
 }
@@ -77,8 +99,197 @@ function initTabs(): void {
       
       btn.classList.add('active');
       document.getElementById(`tab-${tabId}`)?.classList.add('active');
+      
+      if (tabId === 'history') {
+        loadHistory();
+      }
+      if (tabId === 'alerts') {
+        loadAlerts();
+      }
     });
   });
+  
+  updateAlertsCount();
+}
+
+interface HistoryItem {
+  url: string;
+  productName: string;
+  hypeScore: number;
+  date: string;
+}
+
+async function loadHistory(): Promise<void> {
+  const historyList = document.getElementById('history-list')!;
+  const historyCount = document.getElementById('history-count')!;
+  
+  const storageData = await chrome.storage.local.get('history');
+  const history: HistoryItem[] = storageData.history || [];
+  
+  historyCount.textContent = `${history.length} ${getAnalysisWord(history.length)}`;
+  
+  if (history.length === 0) {
+    historyList.innerHTML = '<p class="empty-message">Brak historii analiz</p>';
+    return;
+  }
+  
+  historyList.innerHTML = history.map(item => renderHistoryItem(item)).join('');
+}
+
+function getAnalysisWord(count: number): string {
+  if (count === 1) return 'analiza';
+  if (count >= 2 && count <= 4) return 'analizy';
+  return 'analiz';
+}
+
+function renderHistoryItem(item: HistoryItem): string {
+  const scoreClass = item.hypeScore <= 40 ? 'low' : item.hypeScore <= 60 ? 'medium' : 'high';
+  const source = getSourceFromUrl(item.url);
+  const timeAgo = getTimeAgo(item.date);
+  
+  return `
+    <a href="${item.url}" target="_blank" class="history-item" title="${item.productName}">
+      <div class="history-score ${scoreClass}">${item.hypeScore}</div>
+      <div class="history-info">
+        <div class="history-name">${escapeHtml(item.productName)}</div>
+        <div class="history-meta">
+          <span class="history-source">${source}</span>
+          <span>•</span>
+          <span>${timeAgo}</span>
+        </div>
+      </div>
+      <div class="history-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </div>
+    </a>
+  `;
+}
+
+function getSourceFromUrl(url: string): string {
+  try {
+    const hostname = new URL(url).hostname;
+    if (hostname.includes('amazon')) return 'Amazon';
+    if (hostname.includes('allegro')) return 'Allegro';
+    if (hostname.includes('aliexpress')) return 'AliExpress';
+    return hostname.replace('www.', '');
+  } catch {
+    return 'Nieznane';
+  }
+}
+
+function getTimeAgo(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  
+  if (diffMins < 1) return 'przed chwilą';
+  if (diffMins < 60) return `${diffMins} min temu`;
+  if (diffHours < 24) return `${diffHours} godz. temu`;
+  if (diffDays === 1) return 'wczoraj';
+  if (diffDays < 7) return `${diffDays} dni temu`;
+  
+  return date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' });
+}
+
+function escapeHtml(text: string): string {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+async function clearHistory(): Promise<void> {
+  await chrome.storage.local.set({ history: [] });
+  loadHistory();
+}
+
+function initHistoryActions(): void {
+  const clearBtn = document.getElementById('history-clear-btn');
+  clearBtn?.addEventListener('click', async () => {
+    if (confirm('Czy na pewno chcesz wyczyścić historię analiz?')) {
+      await clearHistory();
+    }
+  });
+}
+
+async function loadAlerts(): Promise<void> {
+  const alertsList = document.getElementById('alerts-list')!;
+  
+  const storageData = await chrome.storage.local.get('priceAlerts');
+  const alerts: IPriceAlert[] = (storageData.priceAlerts || []).filter((a: IPriceAlert) => a.isActive);
+  
+  updateAlertsCount();
+  
+  if (alerts.length === 0) {
+    alertsList.innerHTML = '<p class="empty-message">Brak aktywnych alarmów</p>';
+    return;
+  }
+  
+  alertsList.innerHTML = alerts.map(alert => renderAlertItem(alert)).join('');
+  
+  alertsList.querySelectorAll('.alert-remove').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const alertId = (btn as HTMLElement).dataset.alertId;
+      if (alertId) {
+        await removeAlert(alertId);
+      }
+    });
+  });
+}
+
+function renderAlertItem(alert: IPriceAlert): string {
+  const currency = getCurrencySymbol(alert.currency);
+  const isTriggered = alert.currentPrice <= alert.targetPrice;
+  
+  return `
+    <div class="alert-item ${isTriggered ? 'triggered' : ''}" data-url="${alert.productUrl}">
+      <div class="alert-icon">${isTriggered ? '✓' : '🔔'}</div>
+      <div class="alert-info">
+        <div class="alert-name" title="${escapeHtml(alert.productName)}">${escapeHtml(alert.productName)}</div>
+        <div class="alert-prices">
+          <span class="alert-current-price">${alert.currentPrice.toFixed(2)} ${currency}</span>
+          <span>→</span>
+          <span class="alert-target-price">${alert.targetPrice.toFixed(2)} ${currency}</span>
+        </div>
+      </div>
+      <button class="alert-remove" data-alert-id="${alert.id}" title="Usuń alarm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  `;
+}
+
+async function removeAlert(alertId: string): Promise<void> {
+  const storageData = await chrome.storage.local.get('priceAlerts');
+  const alerts: IPriceAlert[] = storageData.priceAlerts || [];
+  
+  const updatedAlerts = alerts.filter(a => a.id !== alertId);
+  await chrome.storage.local.set({ priceAlerts: updatedAlerts });
+  
+  if (currentPriceAlert?.id === alertId) {
+    currentPriceAlert = null;
+    updatePriceAlertButton(false);
+  }
+  
+  loadAlerts();
+  showToast('Alarm usunięty');
+}
+
+async function updateAlertsCount(): Promise<void> {
+  const alertsCountEl = document.getElementById('alerts-count');
+  if (!alertsCountEl) return;
+  
+  const storageData = await chrome.storage.local.get('priceAlerts');
+  const alerts: IPriceAlert[] = (storageData.priceAlerts || []).filter((a: IPriceAlert) => a.isActive);
+  
+  alertsCountEl.textContent = alerts.length.toString();
 }
 
 function initSettings(): void {
@@ -271,6 +482,7 @@ function displayResults(product: IProductData, analysis: IAnalysisResult): void 
   updateMetrics(product, analysis);
   updateDetails(product, analysis);
   updateFlags(analysis);
+  updatePriceComparison(product.name, product.url);
 
   showState('results');
 }
@@ -358,18 +570,28 @@ function animateScore(score: number): void {
   requestAnimationFrame(animate);
 }
 
+function getRiskLevelFromScore(score: number): RiskLevel {
+  if (score <= 40) return RiskLevel.Low;
+  if (score <= 60) return RiskLevel.Medium;
+  if (score <= 80) return RiskLevel.High;
+  return RiskLevel.Critical;
+}
+
 function getScoreColor(score: number): string {
-  if (score < 30) return '#22c55e';
-  if (score < 50) return '#f59e0b';
-  if (score < 75) return '#f97316';
-  return '#ef4444';
+  switch (getRiskLevelFromScore(score)) {
+    case RiskLevel.Low:
+      return '#22c55e';
+    case RiskLevel.Medium:
+      return '#f59e0b';
+    case RiskLevel.High:
+      return '#f97316';
+    case RiskLevel.Critical:
+      return '#ef4444';
+  }
 }
 
 function getScoreClass(score: number): string {
-  if (score < 30) return 'low';
-  if (score < 50) return 'medium';
-  if (score < 75) return 'high';
-  return 'critical';
+  return getRiskLevelFromScore(score);
 }
 
 function updateRiskBadge(risk: RiskLevel): void {
@@ -436,6 +658,197 @@ function formatPrice(price: number, currency: Currency): string {
 function truncate(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.substring(0, maxLength - 3) + '...';
+}
+
+function initPriceAlert(): void {
+  priceAlertBtn.addEventListener('click', openPriceAlertModal);
+  priceAlertClose.addEventListener('click', closePriceAlertModal);
+  priceAlertCancel.addEventListener('click', closePriceAlertModal);
+  priceAlertSave.addEventListener('click', savePriceAlert);
+  
+  targetPriceInput.addEventListener('input', validateTargetPrice);
+  
+  priceAlertModal.addEventListener('click', (e) => {
+    if (e.target === priceAlertModal) {
+      closePriceAlertModal();
+    }
+  });
+}
+
+async function openPriceAlertModal(): Promise<void> {
+  if (!currentProduct) return;
+  
+  await checkExistingAlert();
+  
+  const price = currentProduct.price || 0;
+  const currency = getCurrencySymbol(currentProduct.currency || Currency.PLN);
+  
+  modalCurrentPrice.textContent = `${price.toFixed(2)} ${currency}`;
+  modalCurrency.textContent = currency;
+  
+  if (currentPriceAlert) {
+    targetPriceInput.value = currentPriceAlert.targetPrice.toString();
+  } else {
+    const suggestedPrice = Math.floor(price * 0.9);
+    targetPriceInput.value = suggestedPrice.toString();
+  }
+  
+  validateTargetPrice();
+  priceAlertModal.classList.remove('hidden');
+}
+
+function closePriceAlertModal(): void {
+  priceAlertModal.classList.add('hidden');
+}
+
+function validateTargetPrice(): void {
+  const targetPrice = parseFloat(targetPriceInput.value);
+  const currentPrice = currentProduct?.price || 0;
+  
+  const isValid = !isNaN(targetPrice) && targetPrice > 0 && targetPrice < currentPrice;
+  (priceAlertSave as HTMLButtonElement).disabled = !isValid;
+}
+
+async function savePriceAlert(): Promise<void> {
+  if (!currentProduct) return;
+  
+  const targetPrice = parseFloat(targetPriceInput.value);
+  if (isNaN(targetPrice) || targetPrice <= 0) return;
+  
+  const alert: IPriceAlert = {
+    id: generateAlertId(),
+    productUrl: currentProduct.url,
+    productName: currentProduct.name,
+    currentPrice: currentProduct.price || 0,
+    targetPrice,
+    currency: currentProduct.currency || Currency.PLN,
+    createdAt: Date.now(),
+    source: getSourceFromUrl(currentProduct.url),
+    isActive: true,
+  };
+  
+  await saveAlertToStorage(alert);
+  currentPriceAlert = alert;
+  
+  updatePriceAlertButton(true);
+  closePriceAlertModal();
+  
+  showToast(`Alarm ustawiony na ${targetPrice.toFixed(2)} ${getCurrencySymbol(alert.currency)}`);
+}
+
+async function checkExistingAlert(): Promise<void> {
+  if (!currentProduct) return;
+  
+  const storageData = await chrome.storage.local.get('priceAlerts');
+  const alerts: IPriceAlert[] = storageData.priceAlerts || [];
+  
+  currentPriceAlert = alerts.find(
+    a => a.productUrl === currentProduct!.url && a.isActive
+  ) || null;
+  
+  updatePriceAlertButton(!!currentPriceAlert);
+}
+
+function updatePriceAlertButton(hasAlert: boolean): void {
+  if (hasAlert && currentPriceAlert) {
+    priceAlertBtn.classList.add('active');
+    const currency = getCurrencySymbol(currentPriceAlert.currency);
+    priceAlertBtnText.textContent = `Alarm: ${currentPriceAlert.targetPrice.toFixed(2)} ${currency}`;
+  } else {
+    priceAlertBtn.classList.remove('active');
+    priceAlertBtnText.textContent = 'Ustaw alarm cenowy';
+  }
+}
+
+async function saveAlertToStorage(alert: IPriceAlert): Promise<void> {
+  const storageData = await chrome.storage.local.get('priceAlerts');
+  const alerts: IPriceAlert[] = storageData.priceAlerts || [];
+  
+  const existingIndex = alerts.findIndex(a => a.productUrl === alert.productUrl);
+  if (existingIndex >= 0) {
+    alerts[existingIndex] = alert;
+  } else {
+    alerts.unshift(alert);
+  }
+  
+  if (alerts.length > 50) {
+    alerts.splice(50);
+  }
+  
+  await chrome.storage.local.set({ priceAlerts: alerts });
+}
+
+function generateAlertId(): string {
+  return `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+function getCurrencySymbol(currency: string): string {
+  const symbols: Record<string, string> = {
+    PLN: 'zł',
+    EUR: '€',
+    USD: '$',
+    GBP: '£',
+  };
+  return symbols[currency] || currency;
+}
+
+function showToast(message: string): void {
+  const existingToast = document.querySelector('.toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => toast.classList.add('visible'), 10);
+  
+  setTimeout(() => {
+    toast.classList.remove('visible');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+function initPriceComparison(): void {
+  const sectionHeader = compareSection.querySelector('.section-header');
+  sectionHeader?.addEventListener('click', toggleCompareSection);
+  compareToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleCompareSection();
+  });
+}
+
+function toggleCompareSection(): void {
+  compareToggle.classList.toggle('collapsed');
+  compareLinks.classList.toggle('collapsed');
+}
+
+function updatePriceComparison(productName: string, currentUrl: string): void {
+  const searchQuery = encodeURIComponent(cleanProductName(productName));
+  const currentSource = getSourceFromUrl(currentUrl).toLowerCase();
+  
+  compareCeneo.href = `https://www.ceneo.pl/szukaj-${searchQuery}`;
+  compareGoogle.href = `https://www.google.com/search?tbm=shop&q=${searchQuery}`;
+  compareAllegro.href = `https://allegro.pl/listing?string=${searchQuery}`;
+  compareAmazon.href = `https://www.amazon.pl/s?k=${searchQuery}`;
+  
+  compareCeneo.classList.toggle('hidden', currentSource === 'ceneo');
+  compareAllegro.classList.toggle('hidden', currentSource === 'allegro');
+  compareAmazon.classList.toggle('hidden', currentSource === 'amazon');
+  compareGoogle.classList.remove('hidden');
+  
+  compareSection.style.display = 'block';
+}
+
+function cleanProductName(name: string): string {
+  return name
+    .replace(/\s*[-–—|]\s*[^-–—|]*$/g, '')
+    .replace(/\s*\([^)]*\)\s*$/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+    .substring(0, 80);
 }
 
 init();

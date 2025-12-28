@@ -108,12 +108,41 @@ NoHype/
 
 ## 📋 TODO
 
-- [ ] Backend API (FastAPI/Python)
-- [ ] Prawdziwa analiza NLP
-- [ ] Historia cen (integracja z Keepa)
-- [ ] Więcej sklepów (Temu, Shein, Empik)
-- [ ] Wersja Firefox
-- [ ] Testy jednostkowe
+### ✅ Zaimplementowane
+- [x] **Hype Score** - ocena poziomu "hype" produktu (0-100) z progami Low/Medium/High/Critical
+- [x] **Wykrywanie buzzwordów** - identyfikacja marketingowych słów kluczowych
+- [x] **Ekstraktory**: Amazon, Allegro, AliExpress (z obsługą JSON-LD)
+- [x] **Quick Score Badge** - widget na stronie produktu po analizie
+- [x] **Historia analiz** - przeglądanie poprzednich analiz w popup
+- [x] **Panel ustawień** - konfiguracja rozszerzenia (auto-analiza, powiadomienia, widget)
+- [x] **Podstawowe wykrywanie rabatów** - flagi dla dużych promocji (>50%, >70%)
+- [x] **🔔 Alarm cenowy** - ustawianie ceny docelowej, powiadomienia Chrome, lista alarmów
+- [x] **Minimalistyczny UI** - dark theme, animowane score'y, toast notifications
+- [x] **Cache analiz** - unikanie powtórnych zapytań
+- [x] **TypeScript strict mode** - pełne typowanie z izolowanymi modułami
+
+### ⚠️ Częściowo zaimplementowane
+- [ ] Wykrywanie fałszywych promocji (brak API do weryfikacji historii cen)
+- [ ] Analiza autentyczności recenzji (mock data - potrzebne NLP)
+- [ ] Alternatywy produktów (interface gotowy, brak rzeczywistych danych)
+
+### 📌 Do zrobienia - Wysoki priorytet
+- [ ] 🔍 **Porównywarka cen** - linki do Ceneo/Google Shopping z nazwą produktu
+- [ ] 📈 **Wykres historii cen** - integracja z Keepa API lub scraping Ceneo
+- [ ] 🤖 **Backend API** - FastAPI/Python z prawdziwym NLP (OpenAI/Claude)
+- [ ] 🧪 **Testy jednostkowe** - Vitest dla ekstraktorów i logiki
+
+### 📌 Do zrobienia - Średni priorytet  
+- [ ] 🏪 **Więcej sklepów** - Temu, Shein, Empik, MediaMarkt, OLX
+- [ ] 🌐 **i18n** - wsparcie dla EN/DE oprócz PL
+- [ ] 📊 **Statystyki użytkownika** - ile zaoszczędził, ile produktów przeanalizował
+- [ ] 🎨 **Motywy** - light/dark/auto
+
+### 📌 Do zrobienia - Niski priorytet
+- [ ] 🦊 **Firefox addon** - port na Manifest V2
+- [ ] 📱 **Mobile friendly popup** - responsive design
+- [ ] 🔗 **Eksport danych** - CSV z historią analiz
+- [ ] 🏷️ **Tagowanie produktów** - własne kategorie/listy
 
 ## 🔒 Prywatność
 

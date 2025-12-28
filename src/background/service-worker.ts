@@ -5,6 +5,7 @@ import type {
   IAnalysisResult,
   IStorageData,
   IUserSettings,
+  IPriceAlert,
 } from '@shared/types/index';
 import { DEFAULT_SETTINGS, CACHE_TTL } from '@shared/constants';
 
@@ -170,6 +171,73 @@ function generateCacheKey(url: string): string {
 chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
   if (tab.id) {
     chrome.tabs.sendMessage(tab.id, { type: 'ANALYZE_CURRENT' });
+  }
+});
+
+chrome.alarms.create('checkPriceAlerts', { periodInMinutes: 60 });
+
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name === 'checkPriceAlerts') {
+    await checkPriceAlerts();
+  }
+});
+
+async function checkPriceAlerts(): Promise<void> {
+  console.log('[NoHype] Checking price alerts...');
+  
+  const storageData = await chrome.storage.local.get(['priceAlerts', 'settings']);
+  const alerts: IPriceAlert[] = storageData.priceAlerts || [];
+  const settings: IUserSettings = storageData.settings || DEFAULT_SETTINGS;
+  
+  if (!settings.showNotifications) {
+    console.log('[NoHype] Notifications disabled, skipping alerts');
+    return;
+  }
+  
+  const activeAlerts = alerts.filter(a => a.isActive);
+  
+  for (const alert of activeAlerts) {
+    if (alert.currentPrice <= alert.targetPrice) {
+      await sendPriceAlertNotification(alert);
+      
+      const updatedAlerts = alerts.map(a => 
+        a.id === alert.id ? { ...a, isActive: false } : a
+      );
+      await chrome.storage.local.set({ priceAlerts: updatedAlerts });
+    }
+  }
+}
+
+async function sendPriceAlertNotification(alert: IPriceAlert): Promise<void> {
+  const currencySymbols: Record<string, string> = {
+    PLN: 'zł',
+    EUR: '€',
+    USD: '$',
+    GBP: '£',
+  };
+  const currency = currencySymbols[alert.currency] || alert.currency;
+  
+  await chrome.notifications.create(`price-alert-${alert.id}`, {
+    type: 'basic',
+    iconUrl: chrome.runtime.getURL('icons/icon128.svg'),
+    title: '🔔 Alarm cenowy!',
+    message: `${alert.productName} osiągnął cenę ${alert.currentPrice.toFixed(2)} ${currency} (cel: ${alert.targetPrice.toFixed(2)} ${currency})`,
+    priority: 2,
+  });
+}
+
+chrome.notifications.onClicked.addListener(async (notificationId) => {
+  if (notificationId.startsWith('price-alert-')) {
+    const alertId = notificationId.replace('price-alert-', '');
+    const storageData = await chrome.storage.local.get('priceAlerts');
+    const alerts: IPriceAlert[] = storageData.priceAlerts || [];
+    const alert = alerts.find(a => a.id === alertId);
+    
+    if (alert) {
+      chrome.tabs.create({ url: alert.productUrl });
+    }
+    
+    chrome.notifications.clear(notificationId);
   }
 });
 

@@ -35,3 +35,5 @@ export type { IUserSettings } from './IUserSettings';
 export type { IUserSettings as UserSettings } from './IUserSettings';
 export type { IStorageData } from './IStorageData';
 export type { IStorageData as StorageData } from './IStorageData';
+export type { IPriceAlert } from './IPriceAlert';
+export type { IPriceAlert as PriceAlert } from './IPriceAlert';
