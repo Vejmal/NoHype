@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoHype</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">◉</span>
+        <span class="logo-text">NoHype</span>
+      </div>
+      <button class="settings-btn" id="settings-btn" title="Ustawienia">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+      </button>
+    </header>
+
+    <main class="main">
+      <div class="state loading-state" id="loading-state">
+        <div class="spinner"></div>
+        <p>Analizuję produkt...</p>
+      </div>
+
+      <div class="state no-product-state hidden" id="no-product-state">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/>
+          </svg>
+        </div>
+        <h2>Brak produktu</h2>
+        <p>Otwórz stronę produktu w obsługiwanym sklepie</p>
+        <div class="stores-grid">
+          <span class="store-tag">Amazon</span>
+          <span class="store-tag">Allegro</span>
+          <span class="store-tag">AliExpress</span>
+          <span class="store-tag">Ceneo</span>
+        </div>
+      </div>
+
+      <div class="state results-state hidden" id="results-state">
+        <div class="product-card" id="product-info">
+          <img class="product-image" id="product-image" src="" alt="">
+          <div class="product-details">
+            <h2 class="product-name" id="product-name">Nazwa produktu</h2>
+            <div class="product-meta">
+              <span class="product-price" id="product-price">0,00 zł</span>
+              <span class="product-original-price" id="product-original-price"></span>
+            </div>
+            <div class="product-rating" id="product-rating"></div>
+          </div>
+        </div>
+
+        <div class="score-card">
+          <div class="score-display">
+            <div class="score-ring" id="score-circle">
+              <svg viewBox="0 0 100 100">
+                <circle class="score-bg" cx="50" cy="50" r="42"/>
+                <circle class="score-progress" id="score-progress" cx="50" cy="50" r="42"/>
+              </svg>
+              <span class="score-value" id="score-value">0</span>
+            </div>
+            <div class="score-info">
+              <span class="score-label">HYPE SCORE</span>
+              <div class="risk-badge" id="risk-badge">
+                <span class="risk-icon">●</span>
+                <span class="risk-text">Analizuję</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-grid" id="metrics-grid">
+          <div class="metric-card" data-metric="description">
+            <span class="metric-icon">📝</span>
+            <span class="metric-label">Opis</span>
+            <span class="metric-status" id="metric-description">—</span>
+          </div>
+          <div class="metric-card" data-metric="price">
+            <span class="metric-icon">🏷️</span>
+            <span class="metric-label">Cena</span>
+            <span class="metric-status" id="metric-price">—</span>
+          </div>
+          <div class="metric-card" data-metric="reviews">
+            <span class="metric-icon">⭐</span>
+            <span class="metric-label">Opinie</span>
+            <span class="metric-status" id="metric-reviews">—</span>
+          </div>
+          <div class="metric-card" data-metric="flags">
+            <span class="metric-icon">⚠️</span>
+            <span class="metric-label">Flagi</span>
+            <span class="metric-status" id="metric-flags">0</span>
+          </div>
+        </div>
+
+        <div class="summary-card" id="summary-section">
+          <p class="summary-text" id="summary-text">Ładowanie analizy...</p>
+        </div>
+
+        <div class="tabs-container">
+          <div class="tabs-header">
+            <button class="tab-btn active" data-tab="details">📊 Szczegóły</button>
+            <button class="tab-btn" data-tab="flags">⚠️ Flagi <span class="tab-count" id="flags-count">0</span></button>
+            <button class="tab-btn" data-tab="history">📈 Historia</button>
+          </div>
+          
+          <div class="tab-content active" id="tab-details">
+            <div class="details-list" id="details-list">
+              <div class="detail-item">
+                <span class="detail-label">Buzzwordy wykryte</span>
+                <span class="detail-value" id="buzzword-count">0</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Wiarygodność opinii</span>
+                <span class="detail-value" id="review-credibility">—</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Źródło</span>
+                <span class="detail-value" id="product-source">—</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tab-content" id="tab-flags">
+            <div class="flags-list" id="flags-list">
+              <p class="empty-message">Brak ostrzeżeń</p>
+            </div>
+          </div>
+          
+          <div class="tab-content" id="tab-history">
+            <p class="empty-message">Historia cen niedostępna</p>
+          </div>
+        </div>
+
+        <button class="analyze-btn" id="analyze-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+          </svg>
+          Analizuj ponownie
+        </button>
+      </div>
+
+      <div class="state error-state hidden" id="error-state">
+        <div class="empty-icon error">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M15 9l-6 6M9 9l6 6"/>
+          </svg>
+        </div>
+        <h2>Wystąpił błąd</h2>
+        <p id="error-message">Nie udało się przeanalizować produktu.</p>
+        <button class="analyze-btn" id="retry-btn">Spróbuj ponownie</button>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>NoHype v1.0.0</span>
+      <span class="separator">•</span>
+      <a href="#" id="history-link">Historia</a>
+    </footer>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel hidden" id="settings-panel">
+      <div class="settings-header">
+        <button class="back-btn" id="settings-back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <span class="settings-title">Ustawienia</span>
+      </div>
+      
+      <div class="settings-content">
+        <div class="settings-section">
+          <h3 class="settings-section-title">Analiza</h3>
+          
+          <label class="settings-item">
+            <span class="settings-label">Automatyczna analiza</span>
+            <input type="checkbox" class="settings-toggle" id="setting-auto-analyze" checked>
+          </label>
+          
+          <label class="settings-item">
+            <span class="settings-label">Pokazuj powiadomienia</span>
+            <input type="checkbox" class="settings-toggle" id="setting-notifications" checked>
+          </label>
+        </div>
+        
+        <div class="settings-section">
+          <h3 class="settings-section-title">Wyświetlanie</h3>
+          
+          <label class="settings-item">
+            <span class="settings-label">Pokazuj widget na stronie</span>
+            <input type="checkbox" class="settings-toggle" id="setting-show-widget" checked>
+          </label>
+          
+          <label class="settings-item">
+            <span class="settings-label">Próg ostrzeżeń</span>
+            <select class="settings-select" id="setting-warning-threshold">
+              <option value="30">Niski (30+)</option>
+              <option value="50" selected>Średni (50+)</option>
+              <option value="70">Wysoki (70+)</option>
+            </select>
+          </label>
+        </div>
+        
+        <div class="settings-section">
+          <h3 class="settings-section-title">Dane</h3>
+          
+          <button class="settings-btn-action" id="clear-history">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+            </svg>
+            Wyczyść historię
+          </button>
+          
+          <button class="settings-btn-action" id="clear-cache">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+            </svg>
+            Wyczyść cache
+          </button>
+        </div>
+        
+        <div class="settings-section">
+          <h3 class="settings-section-title">Informacje</h3>
+          <div class="settings-info">
+            <p>NoHype v1.0.0</p>
+            <p class="text-muted">Wykrywacz przesadnych opisów produktów</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="popup.ts"></script>
+</body>
+</html>
