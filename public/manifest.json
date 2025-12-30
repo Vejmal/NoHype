@@ -1,0 +1,73 @@
+{
+  "manifest_version": 3,
+  "name": "NoHype - Wykrywacz Przesady",
+  "version": "1.0.0",
+  "description": "Wykrywaj przesadzone opisy produktów, fałszywe recenzje i znajdź lepsze alternatywy. Twój asystent zakupowy oparty na AI.",
+  
+  "icons": {
+    "16": "icons/icon16.svg",
+    "48": "icons/icon48.svg",
+    "128": "icons/icon128.svg"
+  },
+
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.svg",
+      "48": "icons/icon48.svg",
+      "128": "icons/icon128.svg"
+    },
+    "default_title": "NoHype - Analizuj produkt"
+  },
+
+  "background": {
+    "service_worker": "src/background/service-worker.ts",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.amazon.com/*",
+        "*://*.amazon.pl/*",
+        "*://*.amazon.de/*",
+        "*://*.amazon.co.uk/*",
+        "*://*.allegro.pl/*",
+        "*://*.aliexpress.com/*",
+        "*://*.ceneo.pl/*",
+        "*://*.sephora.pl/*",
+        "*://*.zalando.pl/*"
+      ],
+      "js": ["src/content/content.ts"],
+      "css": ["css/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "alarms",
+    "notifications"
+  ],
+
+  "host_permissions": [
+    "*://*.amazon.com/*",
+    "*://*.amazon.pl/*",
+    "*://*.amazon.de/*",
+    "*://*.amazon.co.uk/*",
+    "*://*.allegro.pl/*",
+    "*://*.aliexpress.com/*",
+    "*://*.ceneo.pl/*",
+    "*://*.sephora.pl/*",
+    "*://*.zalando.pl/*"
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
