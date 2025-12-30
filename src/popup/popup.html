@@ -13,7 +13,7 @@
         <span class="logo-icon">◉</span>
         <span class="logo-text">NoHype</span>
       </div>
-      <button class="settings-btn" id="settings-btn" title="Ustawienia">
+      <button class="settings-btn" id="settings-btn" data-i18n-title="settings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"/>
           <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
@@ -24,7 +24,7 @@
     <main class="main">
       <div class="state loading-state" id="loading-state">
         <div class="spinner"></div>
-        <p>Analizuję produkt...</p>
+        <p data-i18n="loading">Analizuję produkt...</p>
       </div>
 
       <div class="state no-product-state hidden" id="no-product-state">
@@ -33,8 +33,8 @@
             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0"/>
           </svg>
         </div>
-        <h2>Brak produktu</h2>
-        <p>Otwórz stronę produktu w obsługiwanym sklepie</p>
+        <h2 data-i18n="noProductTitle">Brak produktu</h2>
+        <p data-i18n="noProductDescription">Otwórz stronę produktu w obsługiwanym sklepie</p>
         <div class="stores-grid">
           <span class="store-tag">Amazon</span>
           <span class="store-tag">Allegro</span>
@@ -66,10 +66,10 @@
               <span class="score-value" id="score-value">0</span>
             </div>
             <div class="score-info">
-              <span class="score-label">HYPE SCORE</span>
+              <span class="score-label" data-i18n="hypeScore">HYPE SCORE</span>
               <div class="risk-badge" id="risk-badge">
                 <span class="risk-icon">●</span>
-                <span class="risk-text">Analizuję</span>
+                <span class="risk-text">—</span>
               </div>
             </div>
           </div>
@@ -78,50 +78,50 @@
         <div class="metrics-grid" id="metrics-grid">
           <div class="metric-card" data-metric="description">
             <span class="metric-icon">📝</span>
-            <span class="metric-label">Opis</span>
+            <span class="metric-label" data-i18n="description">Opis</span>
             <span class="metric-status" id="metric-description">—</span>
           </div>
           <div class="metric-card" data-metric="price">
             <span class="metric-icon">🏷️</span>
-            <span class="metric-label">Cena</span>
+            <span class="metric-label" data-i18n="price">Cena</span>
             <span class="metric-status" id="metric-price">—</span>
           </div>
           <div class="metric-card" data-metric="reviews">
             <span class="metric-icon">⭐</span>
-            <span class="metric-label">Opinie</span>
+            <span class="metric-label" data-i18n="reviews">Opinie</span>
             <span class="metric-status" id="metric-reviews">—</span>
           </div>
           <div class="metric-card" data-metric="flags">
             <span class="metric-icon">⚠️</span>
-            <span class="metric-label">Flagi</span>
+            <span class="metric-label" data-i18n="flags">Flagi</span>
             <span class="metric-status" id="metric-flags">0</span>
           </div>
         </div>
 
         <div class="summary-card" id="summary-section">
-          <p class="summary-text" id="summary-text">Ładowanie analizy...</p>
+          <p class="summary-text" id="summary-text" data-i18n="loading">Ładowanie analizy...</p>
         </div>
 
         <div class="tabs-container">
           <div class="tabs-header">
-            <button class="tab-btn active" data-tab="details">📊 Szczegóły</button>
-            <button class="tab-btn" data-tab="flags">⚠️ Flagi <span class="tab-count" id="flags-count">0</span></button>
-            <button class="tab-btn" data-tab="alerts">🔔 Alarmy <span class="tab-count" id="alerts-count">0</span></button>
-            <button class="tab-btn" data-tab="history">📈 Historia</button>
+            <button class="tab-btn active" data-tab="details">📊 <span data-i18n="tabDetails">Szczegóły</span></button>
+            <button class="tab-btn" data-tab="flags">⚠️ <span data-i18n="tabFlags">Flagi</span> <span class="tab-count" id="flags-count">0</span></button>
+            <button class="tab-btn" data-tab="alerts">🔔 <span data-i18n="tabAlerts">Alarmy</span> <span class="tab-count" id="alerts-count">0</span></button>
+            <button class="tab-btn" data-tab="history">📈 <span data-i18n="tabHistory">Historia</span></button>
           </div>
           
           <div class="tab-content active" id="tab-details">
             <div class="details-list" id="details-list">
               <div class="detail-item">
-                <span class="detail-label">Buzzwordy wykryte</span>
+                <span class="detail-label" data-i18n="buzzwordsDetected">Buzzwordy wykryte</span>
                 <span class="detail-value" id="buzzword-count">0</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">Wiarygodność opinii</span>
+                <span class="detail-label" data-i18n="reviewCredibility">Wiarygodność opinii</span>
                 <span class="detail-value" id="review-credibility">—</span>
               </div>
               <div class="detail-item">
-                <span class="detail-label">Źródło</span>
+                <span class="detail-label" data-i18n="source">Źródło</span>
                 <span class="detail-value" id="product-source">—</span>
               </div>
             </div>
@@ -129,14 +129,14 @@
           
           <div class="tab-content" id="tab-flags">
             <div class="flags-list" id="flags-list">
-              <p class="empty-message">Brak ostrzeżeń</p>
+              <p class="empty-message" data-i18n="noWarnings">Brak ostrzeżeń</p>
             </div>
           </div>
 
           <div class="tab-content" id="tab-alerts">
             <div class="alerts-container">
               <div class="alerts-list" id="alerts-list">
-                <p class="empty-message">Brak aktywnych alarmów</p>
+                <p class="empty-message" data-i18n="noActiveAlerts">Brak aktywnych alarmów</p>
               </div>
             </div>
           </div>
@@ -145,14 +145,14 @@
             <div class="history-container">
               <div class="history-header">
                 <span class="history-count" id="history-count">0 analiz</span>
-                <button class="history-clear-btn" id="history-clear-btn" title="Wyczyść historię">
+                <button class="history-clear-btn" id="history-clear-btn" data-i18n-title="clearHistory">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
                   </svg>
                 </button>
               </div>
               <div class="history-list" id="history-list">
-                <p class="empty-message">Brak historii analiz</p>
+                <p class="empty-message" data-i18n="noHistoryAnalyses">Brak historii analiz</p>
               </div>
             </div>
           </div>
@@ -163,7 +163,7 @@
             <path d="M23 4v6h-6M1 20v-6h6"/>
             <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
           </svg>
-          Analizuj ponownie
+          <span data-i18n="analyzeAgain">Analizuj ponownie</span>
         </button>
 
         <button class="price-alert-btn" id="price-alert-btn">
@@ -171,13 +171,13 @@
             <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
             <path d="M13.73 21a2 2 0 01-3.46 0"/>
           </svg>
-          <span id="price-alert-btn-text">Ustaw alarm cenowy</span>
+          <span id="price-alert-btn-text" data-i18n="setPriceAlert">Ustaw alarm cenowy</span>
         </button>
 
         <!-- Price Comparison -->
         <div class="price-compare-section" id="price-compare-section">
           <div class="section-header">
-            <span class="section-title">🔍 Porównaj ceny</span>
+            <span class="section-title" data-i18n="comparePrices">🔍 Porównaj ceny</span>
             <button class="section-toggle" id="compare-toggle">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M6 9l6 6 6-6"/>
@@ -221,26 +221,26 @@
       <div class="modal-overlay hidden" id="price-alert-modal">
         <div class="modal">
           <div class="modal-header">
-            <h3 class="modal-title">🔔 Alarm cenowy</h3>
+            <h3 class="modal-title" data-i18n="priceAlertTitle">🔔 Alarm cenowy</h3>
             <button class="modal-close" id="price-alert-close">×</button>
           </div>
           <div class="modal-body">
             <div class="current-price-info">
-              <span class="price-label">Aktualna cena:</span>
+              <span class="price-label" data-i18n="currentPrice">Aktualna cena:</span>
               <span class="price-value" id="modal-current-price">—</span>
             </div>
             <div class="target-price-input">
-              <label for="target-price">Powiadom mnie gdy cena spadnie do:</label>
+              <label for="target-price" data-i18n="notifyWhenPriceDrops">Powiadom mnie gdy cena spadnie do:</label>
               <div class="price-input-wrapper">
                 <input type="number" id="target-price" placeholder="0.00" step="0.01" min="0">
                 <span class="price-currency" id="modal-currency">zł</span>
               </div>
             </div>
-            <p class="modal-hint">Otrzymasz powiadomienie gdy cena produktu spadnie poniżej ustalonej kwoty.</p>
+            <p class="modal-hint" data-i18n="priceAlertHint">Otrzymasz powiadomienie gdy cena produktu spadnie poniżej ustalonej kwoty.</p>
           </div>
           <div class="modal-footer">
-            <button class="modal-btn modal-btn-secondary" id="price-alert-cancel">Anuluj</button>
-            <button class="modal-btn modal-btn-primary" id="price-alert-save">Ustaw alarm</button>
+            <button class="modal-btn modal-btn-secondary" id="price-alert-cancel" data-i18n="cancel">Anuluj</button>
+            <button class="modal-btn modal-btn-primary" id="price-alert-save" data-i18n="setAlert">Ustaw alarm</button>
           </div>
         </div>
       </div>
@@ -252,9 +252,9 @@
             <path d="M15 9l-6 6M9 9l6 6"/>
           </svg>
         </div>
-        <h2>Wystąpił błąd</h2>
-        <p id="error-message">Nie udało się przeanalizować produktu.</p>
-        <button class="analyze-btn" id="retry-btn">Spróbuj ponownie</button>
+        <h2 data-i18n="errorTitle">Wystąpił błąd</h2>
+        <p id="error-message" data-i18n="errorDescription">Nie udało się przeanalizować produktu.</p>
+        <button class="analyze-btn" id="retry-btn" data-i18n="retry">Spróbuj ponownie</button>
       </div>
     </main>
 
@@ -272,50 +272,68 @@
             <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
         </button>
-        <span class="settings-title">Ustawienia</span>
+        <span class="settings-title" data-i18n="settings">Ustawienia</span>
       </div>
       
       <div class="settings-content">
         <div class="settings-section">
-          <h3 class="settings-section-title">Analiza</h3>
+          <h3 class="settings-section-title" data-i18n="settingsGeneral">General</h3>
           
           <label class="settings-item">
-            <span class="settings-label">Automatyczna analiza</span>
-            <input type="checkbox" class="settings-toggle" id="setting-auto-analyze" checked>
-          </label>
-          
-          <label class="settings-item">
-            <span class="settings-label">Pokazuj powiadomienia</span>
-            <input type="checkbox" class="settings-toggle" id="setting-notifications" checked>
-          </label>
-        </div>
-        
-        <div class="settings-section">
-          <h3 class="settings-section-title">Wyświetlanie</h3>
-          
-          <label class="settings-item">
-            <span class="settings-label">Pokazuj widget na stronie</span>
-            <input type="checkbox" class="settings-toggle" id="setting-show-widget" checked>
-          </label>
-          
-          <label class="settings-item">
-            <span class="settings-label">Próg ostrzeżeń</span>
-            <select class="settings-select" id="setting-warning-threshold">
-              <option value="30">Niski (30+)</option>
-              <option value="50" selected>Średni (50+)</option>
-              <option value="70">Wysoki (70+)</option>
+            <span class="settings-label" data-i18n="language">Language</span>
+            <select class="settings-select" id="setting-language">
+              <option value="auto" data-i18n="languageAuto">Auto (Browser)</option>
+              <option value="en">English</option>
+              <option value="pl">Polski</option>
+              <option value="de">Deutsch</option>
+              <option value="fr">Français</option>
+              <option value="ru">Русский</option>
+              <option value="cs">Čeština</option>
+              <option value="sk">Slovenčina</option>
             </select>
           </label>
         </div>
         
         <div class="settings-section">
-          <h3 class="settings-section-title">Dane</h3>
+          <h3 class="settings-section-title" data-i18n="settingsAnalysis">Analiza</h3>
+          
+          <label class="settings-item">
+            <span class="settings-label" data-i18n="autoAnalysis">Automatyczna analiza</span>
+            <input type="checkbox" class="settings-toggle" id="setting-auto-analyze" checked>
+          </label>
+          
+          <label class="settings-item">
+            <span class="settings-label" data-i18n="notifications">Pokazuj powiadomienia</span>
+            <input type="checkbox" class="settings-toggle" id="setting-notifications" checked>
+          </label>
+        </div>
+        
+        <div class="settings-section">
+          <h3 class="settings-section-title" data-i18n="showWidget">Wyświetlanie</h3>
+          
+          <label class="settings-item">
+            <span class="settings-label" data-i18n="showWidgetDesc">Pokazuj widget na stronie</span>
+            <input type="checkbox" class="settings-toggle" id="setting-show-widget" checked>
+          </label>
+          
+          <label class="settings-item">
+            <span class="settings-label" data-i18n="warningThreshold">Próg ostrzeżeń</span>
+            <select class="settings-select" id="setting-warning-threshold">
+              <option value="30">Low (30+)</option>
+              <option value="50" selected>Medium (50+)</option>
+              <option value="70">High (70+)</option>
+            </select>
+          </label>
+        </div>
+        
+        <div class="settings-section">
+          <h3 class="settings-section-title" data-i18n="settingsData">Dane</h3>
           
           <button class="settings-btn-action" id="clear-history">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
             </svg>
-            Wyczyść historię
+            <span data-i18n="clearHistory">Wyczyść historię</span>
           </button>
           
           <button class="settings-btn-action" id="clear-cache">
@@ -323,15 +341,15 @@
               <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
               <path d="M21 3v5h-5"/>
             </svg>
-            Wyczyść cache
+            <span data-i18n="clearCache">Wyczyść cache</span>
           </button>
         </div>
         
         <div class="settings-section">
-          <h3 class="settings-section-title">Informacje</h3>
+          <h3 class="settings-section-title" data-i18n="version">Informacje</h3>
           <div class="settings-info">
             <p>NoHype v1.0.0</p>
-            <p class="text-muted">Wykrywacz przesadnych opisów produktów</p>
+            <p class="text-muted" data-i18n="extensionDescription">Wykrywacz przesadnych opisów produktów</p>
           </div>
         </div>
       </div>

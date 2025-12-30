@@ -220,8 +220,8 @@ async function sendPriceAlertNotification(alert: IPriceAlert): Promise<void> {
   await chrome.notifications.create(`price-alert-${alert.id}`, {
     type: 'basic',
     iconUrl: chrome.runtime.getURL('icons/icon128.svg'),
-    title: '🔔 Alarm cenowy!',
-    message: `${alert.productName} osiągnął cenę ${alert.currentPrice.toFixed(2)} ${currency} (cel: ${alert.targetPrice.toFixed(2)} ${currency})`,
+    title: '🔔 Price Alert!',
+    message: `${alert.productName} dropped to ${alert.currentPrice.toFixed(2)} ${currency} (target: ${alert.targetPrice.toFixed(2)} ${currency})`,
     priority: 2,
   });
 }

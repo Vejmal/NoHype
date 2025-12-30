@@ -1,0 +1,360 @@
+{
+  "extensionName": {
+    "message": "NoHype - Detektor nadhodnotenia",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Odhaľte prehnané popisy produktov, falošné recenzie a nájdite lepšie alternatívy.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "NoHype - Analyzovať produkt",
+    "description": "Browser action title"
+  },
+  "loading": {
+    "message": "Analyzujem produkt...",
+    "description": "Loading state"
+  },
+  "loadingDescription": {
+    "message": "Kontrolujem popisy, ceny a recenzie",
+    "description": "Loading description"
+  },
+  "noProductTitle": {
+    "message": "Žiadny produkt nebol zistený",
+    "description": "No product detected title"
+  },
+  "noProductDescription": {
+    "message": "Otvorte stránku produktu v podporovanom obchode",
+    "description": "No product description"
+  },
+  "supportedStores": {
+    "message": "Podporované obchody:",
+    "description": "Supported stores label"
+  },
+  "errorTitle": {
+    "message": "Vyskytla sa chyba",
+    "description": "Error title"
+  },
+  "errorDescription": {
+    "message": "Nepodarilo sa analyzovať produkt",
+    "description": "Error description"
+  },
+  "retry": {
+    "message": "Skúsiť znova",
+    "description": "Retry button"
+  },
+  "analyzeAgain": {
+    "message": "Analyzovať znova",
+    "description": "Analyze again button"
+  },
+  "hypeScore": {
+    "message": "HYPE SKÓRE",
+    "description": "Hype score label"
+  },
+  "analyzing": {
+    "message": "Analyzujem",
+    "description": "Analyzing label"
+  },
+  "riskLow": {
+    "message": "Nízke riziko",
+    "description": "Low risk level"
+  },
+  "riskMedium": {
+    "message": "Stredné riziko",
+    "description": "Medium risk level"
+  },
+  "riskHigh": {
+    "message": "Vysoké riziko",
+    "description": "High risk level"
+  },
+  "riskCritical": {
+    "message": "Kritické!",
+    "description": "Critical risk level"
+  },
+  "tabDetails": {
+    "message": "Detaily",
+    "description": "Details tab"
+  },
+  "tabFlags": {
+    "message": "Upozornenia",
+    "description": "Flags tab"
+  },
+  "tabAlerts": {
+    "message": "Cenové alarmy",
+    "description": "Alerts tab"
+  },
+  "tabHistory": {
+    "message": "História",
+    "description": "History tab"
+  },
+  "description": {
+    "message": "Popis",
+    "description": "Description metric"
+  },
+  "price": {
+    "message": "Cena",
+    "description": "Price metric"
+  },
+  "reviews": {
+    "message": "Recenzie",
+    "description": "Reviews metric"
+  },
+  "flags": {
+    "message": "Upozornenia",
+    "description": "Flags metric"
+  },
+  "buzzwordsDetected": {
+    "message": "Zistené buzzwordy",
+    "description": "Buzzwords detected label"
+  },
+  "reviewCredibility": {
+    "message": "Dôveryhodnosť recenzií",
+    "description": "Review credibility label"
+  },
+  "source": {
+    "message": "Zdroj",
+    "description": "Source label"
+  },
+  "noWarnings": {
+    "message": "Žiadne upozornenia",
+    "description": "No warnings message"
+  },
+  "noActiveAlerts": {
+    "message": "Žiadne aktívne cenové alarmy",
+    "description": "No active alerts"
+  },
+  "noHistoryAnalyses": {
+    "message": "Žiadna história analýz",
+    "description": "No history"
+  },
+  "analysesCount": {
+    "message": "$COUNT$ analýz",
+    "description": "Analyses count",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "setPriceAlert": {
+    "message": "Nastaviť cenový alarm",
+    "description": "Set price alert button"
+  },
+  "priceAlertSet": {
+    "message": "Alarm: $PRICE$ $CURRENCY$",
+    "description": "Price alert set",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "99.99"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "€"
+      }
+    }
+  },
+  "priceAlertTitle": {
+    "message": "🔔 Cenový alarm",
+    "description": "Price alert modal title"
+  },
+  "currentPrice": {
+    "message": "Aktuálna cena:",
+    "description": "Current price label"
+  },
+  "notifyWhenPriceDrops": {
+    "message": "Upozorniť ma, keď cena klesne na:",
+    "description": "Notify when price drops"
+  },
+  "priceAlertHint": {
+    "message": "Dostanete upozornenie, keď cena produktu klesne pod stanovenú sumu.",
+    "description": "Price alert hint"
+  },
+  "cancel": {
+    "message": "Zrušiť",
+    "description": "Cancel button"
+  },
+  "setAlert": {
+    "message": "Nastaviť alarm",
+    "description": "Set alert button"
+  },
+  "comparePrices": {
+    "message": "🔍 Porovnať ceny",
+    "description": "Compare prices section"
+  },
+  "settings": {
+    "message": "Nastavenia",
+    "description": "Settings title"
+  },
+  "settingsAnalysis": {
+    "message": "Analýza",
+    "description": "Analysis settings section"
+  },
+  "autoAnalysis": {
+    "message": "Automatická analýza",
+    "description": "Auto analysis toggle"
+  },
+  "autoAnalysisDesc": {
+    "message": "Automaticky analyzovať produkty pri otvorení stránky",
+    "description": "Auto analysis description"
+  },
+  "notifications": {
+    "message": "Notifikácie",
+    "description": "Notifications toggle"
+  },
+  "notificationsDesc": {
+    "message": "Zobrazovať notifikácie pre cenové alarmy",
+    "description": "Notifications description"
+  },
+  "showWidget": {
+    "message": "Widget na stránke",
+    "description": "Show widget toggle"
+  },
+  "showWidgetDesc": {
+    "message": "Zobrazovať výsledky analýzy priamo na stránke",
+    "description": "Show widget description"
+  },
+  "warningThreshold": {
+    "message": "Prah upozornenia",
+    "description": "Warning threshold label"
+  },
+  "settingsData": {
+    "message": "Dáta",
+    "description": "Data settings section"
+  },
+  "clearHistory": {
+    "message": "Vymazať históriu",
+    "description": "Clear history button"
+  },
+  "clearCache": {
+    "message": "Vymazať cache",
+    "description": "Clear cache button"
+  },
+  "version": {
+    "message": "Verzia",
+    "description": "Version label"
+  },
+  "alertRemoved": {
+    "message": "Alarm odstránený",
+    "description": "Alert removed toast"
+  },
+  "alertSetTo": {
+    "message": "Alarm nastavený na $PRICE$ $CURRENCY$",
+    "description": "Alert set toast",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "99.99"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "€"
+      }
+    }
+  },
+  "historyCleared": {
+    "message": "História vymazaná",
+    "description": "History cleared toast"
+  },
+  "cacheCleared": {
+    "message": "Cache vymazaná",
+    "description": "Cache cleared toast"
+  },
+  "confirmClearHistory": {
+    "message": "Naozaj chcete vymazať históriu analýz?",
+    "description": "Confirm clear history"
+  },
+  "momentAgo": {
+    "message": "práve teraz",
+    "description": "Moment ago"
+  },
+  "minutesAgo": {
+    "message": "pred $COUNT$ min",
+    "description": "Minutes ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "pred $COUNT$ hod",
+    "description": "Hours ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "yesterday": {
+    "message": "včera",
+    "description": "Yesterday"
+  },
+  "daysAgo": {
+    "message": "pred $COUNT$ dňami",
+    "description": "Days ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "unknown": {
+    "message": "Neznámy",
+    "description": "Unknown source"
+  },
+  "notificationTitle": {
+    "message": "🔔 Cenový alarm!",
+    "description": "Notification title"
+  },
+  "notificationMessage": {
+    "message": "$PRODUCT$ dosiahol $PRICE$ $CURRENCY$ (cieľ: $TARGET$ $CURRENCY$)",
+    "description": "Notification message",
+    "placeholders": {
+      "product": {
+        "content": "$1",
+        "example": "iPhone 15"
+      },
+      "price": {
+        "content": "$2",
+        "example": "999.00"
+      },
+      "currency": {
+        "content": "$3",
+        "example": "€"
+      },
+      "target": {
+        "content": "$4",
+        "example": "899.00"
+      }
+    }
+  },
+  "confirmClearCache": {
+    "message": "Naozaj chcete vymazať cache?",
+    "description": "Confirm clear cache"
+  },
+  "priceDiscount": {
+    "message": "Akcia",
+    "description": "Price discount label"
+  },
+  "settingsGeneral": {
+    "message": "Všeobecné",
+    "description": "General settings section"
+  },
+  "language": {
+    "message": "Jazyk",
+    "description": "Language setting"
+  },
+  "languageAuto": {
+    "message": "Auto (Prehliadač)",
+    "description": "Auto language option"
+  },
+  "languageChanged": {
+    "message": "Jazyk zmenený",
+    "description": "Language changed toast"
+  }
+}

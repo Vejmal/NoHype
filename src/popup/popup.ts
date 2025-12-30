@@ -62,6 +62,7 @@ interface UserSettings {
   showNotifications: boolean;
   showWidget: boolean;
   warningThreshold: number;
+  language: string;
 }
 
 const defaultSettings: UserSettings = {
@@ -69,11 +70,100 @@ const defaultSettings: UserSettings = {
   showNotifications: true,
   showWidget: true,
   warningThreshold: 50,
+  language: 'auto',
 };
+
+// Cache for loaded translations
+let customMessages: Record<string, { message: string }> | null = null;
+let currentLanguage: string = 'auto';
+
+/**
+ * Loads translation file for a specific language
+ */
+async function loadTranslations(lang: string): Promise<Record<string, { message: string }> | null> {
+  if (lang === 'auto') {
+    return null; // Use Chrome's default i18n
+  }
+  
+  try {
+    const url = chrome.runtime.getURL(`_locales/${lang}/messages.json`);
+    const response = await fetch(url);
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (error) {
+    console.warn(`[NoHype] Could not load translations for ${lang}:`, error);
+  }
+  return null;
+}
+
+/**
+ * Gets a localized message - uses custom translations if loaded, otherwise Chrome's i18n API
+ */
+function getMessage(key: string, substitutions?: string | string[]): string {
+  // Try custom translations first
+  if (customMessages && customMessages[key]) {
+    let message = customMessages[key].message;
+    
+    // Handle substitutions ($1$, $2$, etc.)
+    if (substitutions) {
+      const subs = Array.isArray(substitutions) ? substitutions : [substitutions];
+      subs.forEach((sub, index) => {
+        message = message.replace(new RegExp(`\\$${index + 1}`, 'g'), sub);
+        // Also handle named placeholders like $PRICE$, $COUNT$
+        const placeholderNames = ['COUNT', 'PRICE', 'CURRENCY', 'PRODUCT', 'TARGET'];
+        if (placeholderNames[index]) {
+          message = message.replace(new RegExp(`\\$${placeholderNames[index]}\\$`, 'g'), sub);
+        }
+      });
+    }
+    
+    return message;
+  }
+  
+  // Fallback to Chrome's i18n API
+  return chrome.i18n.getMessage(key, substitutions) || key;
+}
+
+/**
+ * Applies translations to all elements with data-i18n attribute
+ */
+function applyTranslations(): void {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (key) {
+      const message = getMessage(key);
+      if (message && message !== key) {
+        el.textContent = message;
+      }
+    }
+  });
+  
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (key) {
+      const message = getMessage(key);
+      if (message && message !== key) {
+        el.setAttribute('title', message);
+      }
+    }
+  });
+}
 
 async function init(): Promise<void> {
   console.log('[NoHype] Popup initialized');
 
+  // Load saved language preference and apply translations
+  const result = await chrome.storage.local.get('settings');
+  const settings: UserSettings = { ...defaultSettings, ...result.settings };
+  currentLanguage = settings.language || 'auto';
+  
+  if (currentLanguage !== 'auto') {
+    customMessages = await loadTranslations(currentLanguage);
+  }
+  
+  applyTranslations();
+  
   analyzeBtn.addEventListener('click', handleAnalyze);
   retryBtn.addEventListener('click', handleRetry);
   
@@ -126,20 +216,14 @@ async function loadHistory(): Promise<void> {
   const storageData = await chrome.storage.local.get('history');
   const history: HistoryItem[] = storageData.history || [];
   
-  historyCount.textContent = `${history.length} ${getAnalysisWord(history.length)}`;
+  historyCount.textContent = getMessage('analysesCount', [history.length.toString()]);
   
   if (history.length === 0) {
-    historyList.innerHTML = '<p class="empty-message">Brak historii analiz</p>';
+    historyList.innerHTML = `<p class="empty-message">${getMessage('noHistoryAnalyses')}</p>`;
     return;
   }
   
   historyList.innerHTML = history.map(item => renderHistoryItem(item)).join('');
-}
-
-function getAnalysisWord(count: number): string {
-  if (count === 1) return 'analiza';
-  if (count >= 2 && count <= 4) return 'analizy';
-  return 'analiz';
 }
 
 function renderHistoryItem(item: HistoryItem): string {
@@ -175,7 +259,7 @@ function getSourceFromUrl(url: string): string {
     if (hostname.includes('aliexpress')) return 'AliExpress';
     return hostname.replace('www.', '');
   } catch {
-    return 'Nieznane';
+    return getMessage('unknown');
   }
 }
 
@@ -187,13 +271,13 @@ function getTimeAgo(dateString: string): string {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
   
-  if (diffMins < 1) return 'przed chwilą';
-  if (diffMins < 60) return `${diffMins} min temu`;
-  if (diffHours < 24) return `${diffHours} godz. temu`;
-  if (diffDays === 1) return 'wczoraj';
-  if (diffDays < 7) return `${diffDays} dni temu`;
+  if (diffMins < 1) return getMessage('momentAgo');
+  if (diffMins < 60) return getMessage('minutesAgo', [diffMins.toString()]);
+  if (diffHours < 24) return getMessage('hoursAgo', [diffHours.toString()]);
+  if (diffDays === 1) return getMessage('yesterday');
+  if (diffDays < 7) return getMessage('daysAgo', [diffDays.toString()]);
   
-  return date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' });
+  return date.toLocaleDateString(chrome.i18n.getUILanguage(), { day: 'numeric', month: 'short' });
 }
 
 function escapeHtml(text: string): string {
@@ -210,7 +294,7 @@ async function clearHistory(): Promise<void> {
 function initHistoryActions(): void {
   const clearBtn = document.getElementById('history-clear-btn');
   clearBtn?.addEventListener('click', async () => {
-    if (confirm('Czy na pewno chcesz wyczyścić historię analiz?')) {
+    if (confirm(getMessage('confirmClearHistory'))) {
       await clearHistory();
     }
   });
@@ -225,7 +309,7 @@ async function loadAlerts(): Promise<void> {
   updateAlertsCount();
   
   if (alerts.length === 0) {
-    alertsList.innerHTML = '<p class="empty-message">Brak aktywnych alarmów</p>';
+    alertsList.innerHTML = `<p class="empty-message">${getMessage('noActiveAlerts')}</p>`;
     return;
   }
   
@@ -257,7 +341,7 @@ function renderAlertItem(alert: IPriceAlert): string {
           <span class="alert-target-price">${alert.targetPrice.toFixed(2)} ${currency}</span>
         </div>
       </div>
-      <button class="alert-remove" data-alert-id="${alert.id}" title="Usuń alarm">
+      <button class="alert-remove" data-alert-id="${alert.id}" title="${getMessage('alertRemoved')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
@@ -279,7 +363,7 @@ async function removeAlert(alertId: string): Promise<void> {
   }
   
   loadAlerts();
-  showToast('Alarm usunięty');
+  showToast(getMessage('alertRemoved'));
 }
 
 async function updateAlertsCount(): Promise<void> {
@@ -302,6 +386,7 @@ function initSettings(): void {
   const notifications = document.getElementById('setting-notifications') as HTMLInputElement;
   const showWidget = document.getElementById('setting-show-widget') as HTMLInputElement;
   const warningThreshold = document.getElementById('setting-warning-threshold') as HTMLSelectElement;
+  const languageSelect = document.getElementById('setting-language') as HTMLSelectElement;
   const clearHistory = document.getElementById('clear-history')!;
   const clearCache = document.getElementById('clear-cache')!;
   
@@ -309,6 +394,22 @@ function initSettings(): void {
   notifications?.addEventListener('change', () => saveSetting('showNotifications', notifications.checked));
   showWidget?.addEventListener('change', () => saveSetting('showWidget', showWidget.checked));
   warningThreshold?.addEventListener('change', () => saveSetting('warningThreshold', parseInt(warningThreshold.value)));
+  languageSelect?.addEventListener('change', async () => {
+    await saveSetting('language', languageSelect.value);
+    // Reload translations and refresh UI
+    currentLanguage = languageSelect.value;
+    if (currentLanguage === 'auto') {
+      customMessages = null;
+    } else {
+      customMessages = await loadTranslations(currentLanguage);
+    }
+    applyTranslations();
+    // Update dynamic elements that don't have data-i18n
+    if (currentAnalysis) {
+      updateRiskBadge(currentAnalysis.riskLevel);
+    }
+    showToast(getMessage('languageChanged'));
+  });
   
   clearHistory?.addEventListener('click', handleClearHistory);
   clearCache?.addEventListener('click', handleClearCache);
@@ -337,11 +438,13 @@ async function loadSettings(): Promise<void> {
     const notifications = document.getElementById('setting-notifications') as HTMLInputElement;
     const showWidget = document.getElementById('setting-show-widget') as HTMLInputElement;
     const warningThreshold = document.getElementById('setting-warning-threshold') as HTMLSelectElement;
+    const languageSelect = document.getElementById('setting-language') as HTMLSelectElement;
     
     if (autoAnalyze) autoAnalyze.checked = settings.autoAnalyze;
     if (notifications) notifications.checked = settings.showNotifications;
     if (showWidget) showWidget.checked = settings.showWidget;
     if (warningThreshold) warningThreshold.value = settings.warningThreshold.toString();
+    if (languageSelect) languageSelect.value = settings.language;
   } catch (error) {
     console.error('[NoHype] Error loading settings:', error);
   }
@@ -360,25 +463,25 @@ async function saveSetting<K extends keyof UserSettings>(key: K, value: UserSett
 }
 
 async function handleClearHistory(): Promise<void> {
-  if (confirm('Czy na pewno chcesz wyczyścić historię analiz?')) {
+  if (confirm(getMessage('confirmClearHistory'))) {
     try {
       await chrome.storage.local.remove('history');
-      alert('Historia została wyczyszczona.');
+      showToast(getMessage('historyCleared'));
     } catch (error) {
       console.error('[NoHype] Error clearing history:', error);
-      alert('Wystąpił błąd podczas czyszczenia historii.');
+      showToast(getMessage('errorTitle'));
     }
   }
 }
 
 async function handleClearCache(): Promise<void> {
-  if (confirm('Czy na pewno chcesz wyczyścić cache?')) {
+  if (confirm(getMessage('confirmClearCache'))) {
     try {
       await chrome.storage.local.remove('cache');
-      alert('Cache został wyczyszczony.');
+      showToast(getMessage('cacheCleared'));
     } catch (error) {
       console.error('[NoHype] Error clearing cache:', error);
-      alert('Wystąpił błąd podczas czyszczenia cache.');
+      showToast(getMessage('errorTitle'));
     }
   }
 }
@@ -426,7 +529,7 @@ async function loadProductData(): Promise<void> {
     );
   } catch (error) {
     console.error('[NoHype] Error loading product:', error);
-    showError('Nie udało się załadować danych produktu.');
+    showError(getMessage('errorDescription'));
   }
 }
 
@@ -443,11 +546,11 @@ async function analyzeProduct(product: IProductData): Promise<void> {
       currentAnalysis = response.data;
       displayResults(product, response.data);
     } else {
-      showError(response?.error || 'Analiza nie powiodła się.');
+      showError(response?.error || getMessage('errorDescription'));
     }
   } catch (error) {
     console.error('[NoHype] Analysis error:', error);
-    showError('Wystąpił błąd podczas analizy.');
+    showError(getMessage('errorDescription'));
   }
 }
 
@@ -470,7 +573,7 @@ function displayResults(product: IProductData, analysis: IAnalysisResult): void 
   }
 
   if (product.rating && product.reviewCount) {
-    productRating.textContent = `⭐ ${product.rating.toFixed(1)} (${product.reviewCount} opinii)`;
+    productRating.textContent = `⭐ ${product.rating.toFixed(1)} (${product.reviewCount})`;
   } else {
     productRating.textContent = '';
   }
@@ -493,7 +596,7 @@ function updateMetrics(product: IProductData, analysis: IAnalysisResult): void {
   metricDescription.className = `metric-status ${descScore === 0 ? 'ok' : descScore < 3 ? 'warn' : 'bad'}`;
 
   const hasDiscount = product.originalPrice && product.originalPrice > product.price;
-  metricPrice.textContent = hasDiscount ? 'Promocja' : 'OK';
+  metricPrice.textContent = hasDiscount ? getMessage('priceDiscount') : 'OK';
   metricPrice.className = `metric-status ${hasDiscount ? 'warn' : 'ok'}`;
 
   const suspiciousReviews = analysis.reviewAnalysis?.suspiciousPercentage ?? 0;
@@ -512,7 +615,7 @@ function updateDetails(product: IProductData, analysis: IAnalysisResult): void {
   
   const suspiciousReviews = analysis.reviewAnalysis?.suspiciousPercentage ?? null;
   const credibility = suspiciousReviews !== null ? 100 - suspiciousReviews : null;
-  reviewCredibility.textContent = credibility !== null ? `${credibility}%` : '—';
+  reviewCredibility.textContent = credibility !== null ? `${credibility.toFixed(2)}%` : '—';
   
   productSource.textContent = product.source;
 }
@@ -526,7 +629,7 @@ function updateFlags(analysis: IAnalysisResult): void {
       </div>
     `).join('');
   } else {
-    flagsList.innerHTML = '<p class="empty-message">Brak ostrzeżeń</p>';
+    flagsList.innerHTML = `<p class="empty-message">${getMessage('noWarnings')}</p>`;
   }
 }
 
@@ -596,10 +699,10 @@ function getScoreClass(score: number): string {
 
 function updateRiskBadge(risk: RiskLevel): void {
   const labels: Record<RiskLevel, string> = {
-    [RiskLevel.Low]: 'Niskie ryzyko',
-    [RiskLevel.Medium]: 'Średnie ryzyko',
-    [RiskLevel.High]: 'Wysokie ryzyko',
-    [RiskLevel.Critical]: 'Krytyczne!',
+    [RiskLevel.Low]: getMessage('riskLow'),
+    [RiskLevel.Medium]: getMessage('riskMedium'),
+    [RiskLevel.High]: getMessage('riskHigh'),
+    [RiskLevel.Critical]: getMessage('riskCritical'),
   };
 
   const riskText = riskBadge.querySelector('.risk-text');
@@ -649,7 +752,7 @@ async function handleRetry(): Promise<void> {
 }
 
 function formatPrice(price: number, currency: Currency): string {
-  return new Intl.NumberFormat('pl-PL', {
+  return new Intl.NumberFormat(chrome.i18n.getUILanguage(), {
     style: 'currency',
     currency: currency,
   }).format(price);
@@ -733,7 +836,7 @@ async function savePriceAlert(): Promise<void> {
   updatePriceAlertButton(true);
   closePriceAlertModal();
   
-  showToast(`Alarm ustawiony na ${targetPrice.toFixed(2)} ${getCurrencySymbol(alert.currency)}`);
+  showToast(getMessage('alertSetTo', [targetPrice.toFixed(2), getCurrencySymbol(alert.currency)]));
 }
 
 async function checkExistingAlert(): Promise<void> {
@@ -753,10 +856,10 @@ function updatePriceAlertButton(hasAlert: boolean): void {
   if (hasAlert && currentPriceAlert) {
     priceAlertBtn.classList.add('active');
     const currency = getCurrencySymbol(currentPriceAlert.currency);
-    priceAlertBtnText.textContent = `Alarm: ${currentPriceAlert.targetPrice.toFixed(2)} ${currency}`;
+    priceAlertBtnText.textContent = getMessage('priceAlertSet', [currentPriceAlert.targetPrice.toFixed(2), currency]);
   } else {
     priceAlertBtn.classList.remove('active');
-    priceAlertBtnText.textContent = 'Ustaw alarm cenowy';
+    priceAlertBtnText.textContent = getMessage('setPriceAlert');
   }
 }
 
