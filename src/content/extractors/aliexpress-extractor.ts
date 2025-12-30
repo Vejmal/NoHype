@@ -131,7 +131,7 @@ class AliExpressExtractor extends BaseExtractor {
       }
     }
 
-    return parts.join('\n\n') || 'Opis niedostępny (załaduj stronę ponownie)';
+    return parts.join('\n\n') || 'Description unavailable (reload the page)';
   }
 
   private extractReviews(): IReview[] {

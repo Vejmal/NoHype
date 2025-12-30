@@ -1,0 +1,360 @@
+{
+  "extensionName": {
+    "message": "NoHype - Детектор хайпа",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Обнаруживайте преувеличенные описания товаров, поддельные отзывы и находите лучшие альтернативы.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "NoHype - Анализ товара",
+    "description": "Browser action title"
+  },
+  "loading": {
+    "message": "Анализирую товар...",
+    "description": "Loading state"
+  },
+  "loadingDescription": {
+    "message": "Проверяю описания, цены и отзывы",
+    "description": "Loading description"
+  },
+  "noProductTitle": {
+    "message": "Товар не обнаружен",
+    "description": "No product detected title"
+  },
+  "noProductDescription": {
+    "message": "Откройте страницу товара в поддерживаемом магазине",
+    "description": "No product description"
+  },
+  "supportedStores": {
+    "message": "Поддерживаемые магазины:",
+    "description": "Supported stores label"
+  },
+  "errorTitle": {
+    "message": "Произошла ошибка",
+    "description": "Error title"
+  },
+  "errorDescription": {
+    "message": "Не удалось проанализировать товар",
+    "description": "Error description"
+  },
+  "retry": {
+    "message": "Повторить",
+    "description": "Retry button"
+  },
+  "analyzeAgain": {
+    "message": "Анализировать снова",
+    "description": "Analyze again button"
+  },
+  "hypeScore": {
+    "message": "УРОВЕНЬ ХАЙПА",
+    "description": "Hype score label"
+  },
+  "analyzing": {
+    "message": "Анализирую",
+    "description": "Analyzing label"
+  },
+  "riskLow": {
+    "message": "Низкий риск",
+    "description": "Low risk level"
+  },
+  "riskMedium": {
+    "message": "Средний риск",
+    "description": "Medium risk level"
+  },
+  "riskHigh": {
+    "message": "Высокий риск",
+    "description": "High risk level"
+  },
+  "riskCritical": {
+    "message": "Критично!",
+    "description": "Critical risk level"
+  },
+  "tabDetails": {
+    "message": "Детали",
+    "description": "Details tab"
+  },
+  "tabFlags": {
+    "message": "Флаги",
+    "description": "Flags tab"
+  },
+  "tabAlerts": {
+    "message": "Уведомления",
+    "description": "Alerts tab"
+  },
+  "tabHistory": {
+    "message": "История",
+    "description": "History tab"
+  },
+  "description": {
+    "message": "Описание",
+    "description": "Description metric"
+  },
+  "price": {
+    "message": "Цена",
+    "description": "Price metric"
+  },
+  "reviews": {
+    "message": "Отзывы",
+    "description": "Reviews metric"
+  },
+  "flags": {
+    "message": "Флаги",
+    "description": "Flags metric"
+  },
+  "buzzwordsDetected": {
+    "message": "Обнаружено модных слов",
+    "description": "Buzzwords detected label"
+  },
+  "reviewCredibility": {
+    "message": "Достоверность отзывов",
+    "description": "Review credibility label"
+  },
+  "source": {
+    "message": "Источник",
+    "description": "Source label"
+  },
+  "noWarnings": {
+    "message": "Нет предупреждений",
+    "description": "No warnings message"
+  },
+  "noActiveAlerts": {
+    "message": "Нет активных уведомлений",
+    "description": "No active alerts"
+  },
+  "noHistoryAnalyses": {
+    "message": "История анализов пуста",
+    "description": "No history"
+  },
+  "analysesCount": {
+    "message": "$COUNT$ анализов",
+    "description": "Analyses count",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "setPriceAlert": {
+    "message": "Установить уведомление о цене",
+    "description": "Set price alert button"
+  },
+  "priceAlertSet": {
+    "message": "Уведомление: $PRICE$ $CURRENCY$",
+    "description": "Price alert set",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "99.99"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "₽"
+      }
+    }
+  },
+  "priceAlertTitle": {
+    "message": "🔔 Уведомление о цене",
+    "description": "Price alert modal title"
+  },
+  "currentPrice": {
+    "message": "Текущая цена:",
+    "description": "Current price label"
+  },
+  "notifyWhenPriceDrops": {
+    "message": "Уведомить меня, когда цена упадёт до:",
+    "description": "Notify when price drops"
+  },
+  "priceAlertHint": {
+    "message": "Вы получите уведомление, когда цена товара упадёт ниже установленной суммы.",
+    "description": "Price alert hint"
+  },
+  "cancel": {
+    "message": "Отмена",
+    "description": "Cancel button"
+  },
+  "setAlert": {
+    "message": "Установить",
+    "description": "Set alert button"
+  },
+  "comparePrices": {
+    "message": "🔍 Сравнить цены",
+    "description": "Compare prices section"
+  },
+  "settings": {
+    "message": "Настройки",
+    "description": "Settings title"
+  },
+  "settingsAnalysis": {
+    "message": "Анализ",
+    "description": "Analysis settings section"
+  },
+  "autoAnalysis": {
+    "message": "Автоматический анализ",
+    "description": "Auto analysis toggle"
+  },
+  "autoAnalysisDesc": {
+    "message": "Анализировать товары автоматически при открытии страницы",
+    "description": "Auto analysis description"
+  },
+  "notifications": {
+    "message": "Уведомления",
+    "description": "Notifications toggle"
+  },
+  "notificationsDesc": {
+    "message": "Показывать уведомления о ценах",
+    "description": "Notifications description"
+  },
+  "showWidget": {
+    "message": "Виджет на странице",
+    "description": "Show widget toggle"
+  },
+  "showWidgetDesc": {
+    "message": "Показывать результаты анализа прямо на странице",
+    "description": "Show widget description"
+  },
+  "warningThreshold": {
+    "message": "Порог предупреждения",
+    "description": "Warning threshold label"
+  },
+  "settingsData": {
+    "message": "Данные",
+    "description": "Data settings section"
+  },
+  "clearHistory": {
+    "message": "Очистить историю",
+    "description": "Clear history button"
+  },
+  "clearCache": {
+    "message": "Очистить кэш",
+    "description": "Clear cache button"
+  },
+  "version": {
+    "message": "Версия",
+    "description": "Version label"
+  },
+  "alertRemoved": {
+    "message": "Уведомление удалено",
+    "description": "Alert removed toast"
+  },
+  "alertSetTo": {
+    "message": "Уведомление установлено на $PRICE$ $CURRENCY$",
+    "description": "Alert set toast",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "99.99"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "₽"
+      }
+    }
+  },
+  "historyCleared": {
+    "message": "История очищена",
+    "description": "History cleared toast"
+  },
+  "cacheCleared": {
+    "message": "Кэш очищен",
+    "description": "Cache cleared toast"
+  },
+  "confirmClearHistory": {
+    "message": "Вы уверены, что хотите очистить историю анализов?",
+    "description": "Confirm clear history"
+  },
+  "momentAgo": {
+    "message": "только что",
+    "description": "Moment ago"
+  },
+  "minutesAgo": {
+    "message": "$COUNT$ мин. назад",
+    "description": "Minutes ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$COUNT$ ч. назад",
+    "description": "Hours ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "yesterday": {
+    "message": "вчера",
+    "description": "Yesterday"
+  },
+  "daysAgo": {
+    "message": "$COUNT$ дн. назад",
+    "description": "Days ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "unknown": {
+    "message": "Неизвестно",
+    "description": "Unknown source"
+  },
+  "notificationTitle": {
+    "message": "🔔 Уведомление о цене!",
+    "description": "Notification title"
+  },
+  "notificationMessage": {
+    "message": "$PRODUCT$ достиг цены $PRICE$ $CURRENCY$ (цель: $TARGET$ $CURRENCY$)",
+    "description": "Notification message",
+    "placeholders": {
+      "product": {
+        "content": "$1",
+        "example": "iPhone 15"
+      },
+      "price": {
+        "content": "$2",
+        "example": "99999.00"
+      },
+      "currency": {
+        "content": "$3",
+        "example": "₽"
+      },
+      "target": {
+        "content": "$4",
+        "example": "89999.00"
+      }
+    }
+  },
+  "confirmClearCache": {
+    "message": "Вы уверены, что хотите очистить кэш?",
+    "description": "Confirm clear cache"
+  },
+  "priceDiscount": {
+    "message": "Скидка",
+    "description": "Price discount label"
+  },
+  "settingsGeneral": {
+    "message": "Общие",
+    "description": "General settings section"
+  },
+  "language": {
+    "message": "Язык",
+    "description": "Language setting"
+  },
+  "languageAuto": {
+    "message": "Авто (Браузер)",
+    "description": "Auto language option"
+  },
+  "languageChanged": {
+    "message": "Язык изменён",
+    "description": "Language changed toast"
+  }
+}

@@ -39,12 +39,12 @@ class ApiClient {
       );
 
       if (!response.success || !response.data) {
-        throw new Error(response.error || 'Nieznany błąd API');
+        throw new Error(response.error || 'Unknown API error');
       }
 
       return response.data;
     } catch (error) {
-      console.warn('API niedostępne, używam danych testowych:', error);
+      console.warn('API unavailable, using mock data:', error);
       return this.getMockAnalysis(product);
     }
   }
@@ -78,9 +78,9 @@ class ApiClient {
     const combinedText = `${nameLower} ${descLower}`;
     
     const buzzwordsFound: IBuzzwordMatch[] = [];
-    const marketingWords = ['rewolucyjny', 'najlepszy', 'innowacyjny', 'premium', 'hit', 'bestseller'];
-    const urgencyWords = ['ostatnie sztuki', 'tylko dziś', 'promocja', 'okazja'];
-    const exaggerationWords = ['niesamowity', 'idealny', 'perfekcyjny', 'cudowny'];
+    const marketingWords = ['revolutionary', 'best', 'innovative', 'premium', 'hit', 'bestseller', 'amazing', 'incredible'];
+    const urgencyWords = ['last items', 'today only', 'sale', 'limited offer', 'hurry', 'act now'];
+    const exaggerationWords = ['unbelievable', 'ideal', 'perfect', 'miraculous', 'fantastic'];
 
     marketingWords.forEach(word => {
       const regex = new RegExp(word, 'gi');
@@ -124,7 +124,7 @@ class ApiClient {
     if (buzzwordsFound.length > 3) {
       flags.push({
         type: HypeFlagType.ExaggeratedClaims,
-        message: `Znaleziono ${buzzwordsFound.length} buzzwordów marketingowych`,
+        message: `Found ${buzzwordsFound.length} marketing buzzwords`,
         severity: FlagSeverity.Warning,
       });
     }
@@ -134,7 +134,7 @@ class ApiClient {
       if (discount > 50) {
         flags.push({
           type: HypeFlagType.FakeDiscount,
-          message: `Rabat ${discount.toFixed(0)}% może być zawyżony`,
+          message: `${discount.toFixed(0)}% discount may be inflated`,
           severity: discount > 70 ? FlagSeverity.Danger : FlagSeverity.Warning,
         });
       }
@@ -151,7 +151,7 @@ class ApiClient {
         suspiciousPercentage: Math.random() * 30,
         averageSentiment: 0.6 + Math.random() * 0.3,
         fakePatternDetected: Math.random() > 0.7,
-        details: 'Analiza recenzji oparta na danych testowych',
+        details: 'Review analysis based on mock data',
       },
       alternatives: [],
       analyzedAt: Date.now(),
@@ -160,13 +160,13 @@ class ApiClient {
 
   private generateSummary(score: number, buzzwordCount: number): string {
     if (score < 30) {
-      return 'Ten produkt wygląda na autentyczny. Opis jest rzeczowy i nie zawiera przesadzonych twierdzeń.';
+      return 'This product appears authentic. The description is factual and contains no exaggerated claims.';
     } else if (score < 50) {
-      return 'Produkt zawiera pewne elementy marketingowe, ale ogólnie wygląda OK. Zachowaj ostrożność.';
+      return 'Product contains some marketing elements, but overall looks OK. Exercise caution.';
     } else if (score < 75) {
-      return `Uwaga! Znaleziono ${buzzwordCount} buzzwordów. Opis może być przesadzony. Porównaj z innymi ofertami.`;
+      return `Warning! Found ${buzzwordCount} buzzwords. The description may be exaggerated. Compare with other offers.`;
     } else {
-      return '🚨 Wysoki poziom hype! Ten produkt używa agresywnego marketingu. Rozważ alternatywy.';
+      return '🚨 High hype level! This product uses aggressive marketing. Consider alternatives.';
     }
   }
 }

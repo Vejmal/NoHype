@@ -104,10 +104,10 @@ function createWidget(result: IAnalysisResult): HTMLElement {
   };
 
   const riskLabels: Record<RiskLevel, string> = {
-    [RiskLevel.Low]: 'Niskie ryzyko',
-    [RiskLevel.Medium]: 'Średnie ryzyko',
-    [RiskLevel.High]: 'Wysokie ryzyko',
-    [RiskLevel.Critical]: 'Uwaga!',
+    [RiskLevel.Low]: 'Low risk',
+    [RiskLevel.Medium]: 'Medium risk',
+    [RiskLevel.High]: 'High risk',
+    [RiskLevel.Critical]: 'Warning!',
   };
 
   widget.innerHTML = `
@@ -135,7 +135,7 @@ function createWidget(result: IAnalysisResult): HTMLElement {
       ` : ''}
       ${result.buzzwords.length > 0 ? `
         <div class="nohype-buzzwords">
-          <strong>Buzzwordy:</strong>
+          <strong>Buzzwords:</strong>
           ${result.buzzwords.slice(0, 5).map((b) => `
             <span class="nohype-buzzword">${b.word}</span>
           `).join('')}

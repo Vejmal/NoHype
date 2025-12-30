@@ -7,7 +7,7 @@ export const CACHE_TTL = 60 * 60 * 1000;
 export const DEFAULT_SETTINGS = {
   autoAnalyze: false,
   showNotifications: true,
-  language: 'pl' as const,
+  language: 'en' as const,
   alertThreshold: 70,
 };
 
@@ -73,9 +73,9 @@ export const RISK_COLORS = {
   critical: '#ef4444',
 };
 
-export const RISK_LABELS_PL = {
-  low: 'Niskie ryzyko',
-  medium: 'Średnie ryzyko',
-  high: 'Wysokie ryzyko',
-  critical: 'Krytyczne!',
+export const RISK_LABELS = {
+  low: 'Low risk',
+  medium: 'Medium risk',
+  high: 'High risk',
+  critical: 'Critical!',
 };

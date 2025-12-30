@@ -1,0 +1,360 @@
+{
+  "extensionName": {
+    "message": "NoHype - Wykrywacz Przesady",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Wykrywaj przesadzone opisy produktów, fałszywe recenzje i znajdź lepsze alternatywy.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "NoHype - Analizuj produkt",
+    "description": "Browser action title"
+  },
+  "loading": {
+    "message": "Analizuję produkt...",
+    "description": "Loading state"
+  },
+  "loadingDescription": {
+    "message": "Sprawdzam opisy, ceny i recenzje",
+    "description": "Loading description"
+  },
+  "noProductTitle": {
+    "message": "Nie wykryto produktu",
+    "description": "No product detected title"
+  },
+  "noProductDescription": {
+    "message": "Otwórz stronę produktu w obsługiwanym sklepie",
+    "description": "No product description"
+  },
+  "supportedStores": {
+    "message": "Obsługiwane sklepy:",
+    "description": "Supported stores label"
+  },
+  "errorTitle": {
+    "message": "Wystąpił błąd",
+    "description": "Error title"
+  },
+  "errorDescription": {
+    "message": "Nie udało się przeanalizować produktu",
+    "description": "Error description"
+  },
+  "retry": {
+    "message": "Spróbuj ponownie",
+    "description": "Retry button"
+  },
+  "analyzeAgain": {
+    "message": "Analizuj ponownie",
+    "description": "Analyze again button"
+  },
+  "hypeScore": {
+    "message": "HYPE SCORE",
+    "description": "Hype score label"
+  },
+  "analyzing": {
+    "message": "Analizuję",
+    "description": "Analyzing label"
+  },
+  "riskLow": {
+    "message": "Niskie ryzyko",
+    "description": "Low risk level"
+  },
+  "riskMedium": {
+    "message": "Średnie ryzyko",
+    "description": "Medium risk level"
+  },
+  "riskHigh": {
+    "message": "Wysokie ryzyko",
+    "description": "High risk level"
+  },
+  "riskCritical": {
+    "message": "Krytyczne!",
+    "description": "Critical risk level"
+  },
+  "tabDetails": {
+    "message": "Szczegóły",
+    "description": "Details tab"
+  },
+  "tabFlags": {
+    "message": "Flagi",
+    "description": "Flags tab"
+  },
+  "tabAlerts": {
+    "message": "Alarmy",
+    "description": "Alerts tab"
+  },
+  "tabHistory": {
+    "message": "Historia",
+    "description": "History tab"
+  },
+  "description": {
+    "message": "Opis",
+    "description": "Description metric"
+  },
+  "price": {
+    "message": "Cena",
+    "description": "Price metric"
+  },
+  "reviews": {
+    "message": "Opinie",
+    "description": "Reviews metric"
+  },
+  "flags": {
+    "message": "Flagi",
+    "description": "Flags metric"
+  },
+  "buzzwordsDetected": {
+    "message": "Buzzwordy wykryte",
+    "description": "Buzzwords detected label"
+  },
+  "reviewCredibility": {
+    "message": "Wiarygodność opinii",
+    "description": "Review credibility label"
+  },
+  "source": {
+    "message": "Źródło",
+    "description": "Source label"
+  },
+  "noWarnings": {
+    "message": "Brak ostrzeżeń",
+    "description": "No warnings message"
+  },
+  "noActiveAlerts": {
+    "message": "Brak aktywnych alarmów",
+    "description": "No active alerts"
+  },
+  "noHistoryAnalyses": {
+    "message": "Brak historii analiz",
+    "description": "No history"
+  },
+  "analysesCount": {
+    "message": "$COUNT$ analiz",
+    "description": "Analyses count",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "setPriceAlert": {
+    "message": "Ustaw alarm cenowy",
+    "description": "Set price alert button"
+  },
+  "priceAlertSet": {
+    "message": "Alarm: $PRICE$ $CURRENCY$",
+    "description": "Price alert set",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "99.99"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "zł"
+      }
+    }
+  },
+  "priceAlertTitle": {
+    "message": "🔔 Alarm cenowy",
+    "description": "Price alert modal title"
+  },
+  "currentPrice": {
+    "message": "Aktualna cena:",
+    "description": "Current price label"
+  },
+  "notifyWhenPriceDrops": {
+    "message": "Powiadom mnie gdy cena spadnie do:",
+    "description": "Notify when price drops"
+  },
+  "priceAlertHint": {
+    "message": "Otrzymasz powiadomienie gdy cena produktu spadnie poniżej ustalonej kwoty.",
+    "description": "Price alert hint"
+  },
+  "cancel": {
+    "message": "Anuluj",
+    "description": "Cancel button"
+  },
+  "setAlert": {
+    "message": "Ustaw alarm",
+    "description": "Set alert button"
+  },
+  "comparePrices": {
+    "message": "🔍 Porównaj ceny",
+    "description": "Compare prices section"
+  },
+  "settings": {
+    "message": "Ustawienia",
+    "description": "Settings title"
+  },
+  "settingsAnalysis": {
+    "message": "Analiza",
+    "description": "Analysis settings section"
+  },
+  "autoAnalysis": {
+    "message": "Automatyczna analiza",
+    "description": "Auto analysis toggle"
+  },
+  "autoAnalysisDesc": {
+    "message": "Analizuj produkty automatycznie po otwarciu strony",
+    "description": "Auto analysis description"
+  },
+  "notifications": {
+    "message": "Powiadomienia",
+    "description": "Notifications toggle"
+  },
+  "notificationsDesc": {
+    "message": "Pokazuj powiadomienia o alertach cenowych",
+    "description": "Notifications description"
+  },
+  "showWidget": {
+    "message": "Widget na stronie",
+    "description": "Show widget toggle"
+  },
+  "showWidgetDesc": {
+    "message": "Wyświetlaj wynik analizy bezpośrednio na stronie",
+    "description": "Show widget description"
+  },
+  "warningThreshold": {
+    "message": "Próg ostrzeżenia",
+    "description": "Warning threshold label"
+  },
+  "settingsData": {
+    "message": "Dane",
+    "description": "Data settings section"
+  },
+  "clearHistory": {
+    "message": "Wyczyść historię",
+    "description": "Clear history button"
+  },
+  "clearCache": {
+    "message": "Wyczyść cache",
+    "description": "Clear cache button"
+  },
+  "version": {
+    "message": "Wersja",
+    "description": "Version label"
+  },
+  "alertRemoved": {
+    "message": "Alarm usunięty",
+    "description": "Alert removed toast"
+  },
+  "alertSetTo": {
+    "message": "Alarm ustawiony na $PRICE$ $CURRENCY$",
+    "description": "Alert set toast",
+    "placeholders": {
+      "price": {
+        "content": "$1",
+        "example": "99.99"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "zł"
+      }
+    }
+  },
+  "historyCleared": {
+    "message": "Historia wyczyszczona",
+    "description": "History cleared toast"
+  },
+  "cacheCleared": {
+    "message": "Cache wyczyszczony",
+    "description": "Cache cleared toast"
+  },
+  "confirmClearHistory": {
+    "message": "Czy na pewno chcesz wyczyścić historię analiz?",
+    "description": "Confirm clear history"
+  },
+  "momentAgo": {
+    "message": "przed chwilą",
+    "description": "Moment ago"
+  },
+  "minutesAgo": {
+    "message": "$COUNT$ min temu",
+    "description": "Minutes ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$COUNT$ godz. temu",
+    "description": "Hours ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "yesterday": {
+    "message": "wczoraj",
+    "description": "Yesterday"
+  },
+  "daysAgo": {
+    "message": "$COUNT$ dni temu",
+    "description": "Days ago",
+    "placeholders": {
+      "count": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "unknown": {
+    "message": "Nieznane",
+    "description": "Unknown source"
+  },
+  "notificationTitle": {
+    "message": "🔔 Alarm cenowy!",
+    "description": "Notification title"
+  },
+  "notificationMessage": {
+    "message": "$PRODUCT$ osiągnął cenę $PRICE$ $CURRENCY$ (cel: $TARGET$ $CURRENCY$)",
+    "description": "Notification message",
+    "placeholders": {
+      "product": {
+        "content": "$1",
+        "example": "iPhone 15"
+      },
+      "price": {
+        "content": "$2",
+        "example": "3999.00"
+      },
+      "currency": {
+        "content": "$3",
+        "example": "zł"
+      },
+      "target": {
+        "content": "$4",
+        "example": "3500.00"
+      }
+    }
+  },
+  "confirmClearCache": {
+    "message": "Czy na pewno chcesz wyczyścić cache?",
+    "description": "Confirm clear cache"
+  },
+  "priceDiscount": {
+    "message": "Promocja",
+    "description": "Price discount label"
+  },
+  "settingsGeneral": {
+    "message": "Ogólne",
+    "description": "General settings section"
+  },
+  "language": {
+    "message": "Język",
+    "description": "Language setting"
+  },
+  "languageAuto": {
+    "message": "Auto (Przeglądarka)",
+    "description": "Auto language option"
+  },
+  "languageChanged": {
+    "message": "Język zmieniony",
+    "description": "Language changed toast"
+  }
+}
